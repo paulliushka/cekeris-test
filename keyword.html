@@ -5,15 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atrask pagal Slaptažodį</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+        .result-success {
+            background-color: #e6ffe6;
+            color: #1a751a;
+            border: 1px solid #4caf50;
+        }
+        .result-error {
+            background-color: #ffe6e6;
+            color: #cc0000;
+            border: 1px solid #cc0000;
+        }
+    </style>
 </head>
 <body>
 
     <header>
         <h1>Geocaching Įrankiai</h1>
         <nav>
-            <a href="index.html">Pradžia</a>
-            <a href="checker.html">Koordinačių Tikrinimas</a>
-            <a href="keyword.html" class="active">Atrask pagal Slaptažodį</a>
+            <a href="index">Pradžia</a>
+            <a href="checker">Koordinačių Tikrinimas</a>
+            <a href="keyword" class="active">Atrask pagal Slaptažodį</a>
         </nav>
     </header>
 
@@ -22,7 +46,7 @@
             <h2>Atrask Slėptuvę pagal Slaptažodį</h2>
             <div class="form-group">
                 <label for="keywordInput">Įveskite slaptažodį:</label>
-                <input type="text" id="keywordInput" placeholder="Slaptažodis">
+                <input type="text" id="keywordInput" placeholder="Slaptažodis" onkeydown="handleEnter(event)">
             </div>
             <button onclick="findCoordinatesByKeyword()">Rodyti Koordinates</button>
             <div id="result"></div>
@@ -48,7 +72,7 @@
             }
 
             try {
-                const response = await fetch('keyword-data.json');
+                const response = await fetch('data.json');
                 if (!response.ok) {
                     throw new Error('Nepavyko gauti duomenų.');
                 }
@@ -57,7 +81,6 @@
                 const foundCache = caches.find(cache => cache.keyword.toLowerCase() === userInput.toLowerCase());
 
                 if (foundCache) {
-                    // Atnaujinta dalis, įtraukianti slėptuvės pavadinimą
                     resultDiv.innerHTML = `Slėptuvės pavadinimas: <strong>${foundCache.id}</strong><br>Slėptuvės koordinatės: <br><strong>${foundCache.coordinates}</strong>`;
                     resultDiv.className = 'result-success';
                 } else {
@@ -67,6 +90,12 @@
             } catch (error) {
                 resultDiv.textContent = `Klaida: ${error.message}`;
                 resultDiv.className = 'result-error';
+            }
+        }
+        
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                findCoordinatesByKeyword();
             }
         }
     </script>

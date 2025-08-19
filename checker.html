@@ -5,15 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koordinačių Tikrinimas</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+        .result-success {
+            background-color: #e6ffe6;
+            color: #1a751a;
+            border: 1px solid #4caf50;
+        }
+        .result-error {
+            background-color: #ffe6e6;
+            color: #cc0000;
+            border: 1px solid #cc0000;
+        }
+    </style>
 </head>
 <body>
 
     <header>
         <h1>Geocaching Įrankiai</h1>
         <nav>
-            <a href="index.html">Pradžia</a>
-            <a href="checker.html" class="active">Koordinačių Tikrinimas</a>
-            <a href="keyword.html">Atrask pagal Slaptažodį</a>
+            <a href="index">Pradžia</a>
+            <a href="checker" class="active">Koordinačių Tikrinimas</a>
+            <a href="keyword">Atrask pagal Slaptažodį</a>
         </nav>
     </header>
 
@@ -22,7 +46,7 @@
             <h2>Patikrinkite Slėptuvės Koordinates</h2>
             <div class="form-group">
                 <label for="coordsInput">Įveskite koordinates (pvz., N 55° 43.116 E 21° 07.872):</label>
-                <input type="text" id="coordsInput" placeholder="N XX° XX.XXX E XX° XX.XXX">
+                <input type="text" id="coordsInput" placeholder="N XX° XX.XXX E XX° XX.XXX" onkeydown="handleEnter(event)">
             </div>
             <button onclick="checkCoordinates()">Tikrinti</button>
             <div id="result"></div>
@@ -54,15 +78,13 @@
                 }
                 const caches = await response.json();
                 
-                // Normalizuojame vartotojo įvestį: pašaliname tarpus, laipsnių ženklą (°)
-                // ir paverčiame mažosiomis raidėmis, kad palyginimas būtų tikslus.
-                const normalize = (str) => str.replace(/[\s°]/g, '').toLowerCase();
+                const normalize = (str) => str.replace(/[\s°']/g, '').toLowerCase();
                 const normalizedInput = normalize(userInput);
 
-                const found = caches.some(cache => normalize(cache.coordinates) === normalizedInput);
+                const found = caches.find(cache => normalize(cache.coordinates) === normalizedInput);
 
                 if (found) {
-                    resultDiv.textContent = '✅ Teisingai! Šios koordinatės atitinka vieną iš slėptuvių.';
+                    resultDiv.innerHTML = `✅ Teisingai! Šios koordinatės atitinka slėptuvę: <a href="${found.page}" target="_blank">${found.name}</a>`;
                     resultDiv.className = 'result-success';
                 } else {
                     resultDiv.textContent = '❌ Deja, tokios koordinatės nerastos. Bandykite dar kartą.';
@@ -71,6 +93,12 @@
             } catch (error) {
                 resultDiv.textContent = `Klaida: ${error.message}`;
                 resultDiv.className = 'result-error';
+            }
+        }
+        
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                checkCoordinates();
             }
         }
     </script>
