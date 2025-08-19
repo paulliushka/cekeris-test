@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atrask pagal Slaptažodį</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Geocaching Įrankiai</h1>
+        <nav>
+            <a href="index.html">Pradžia</a>
+            <a href="checker.html">Koordinačių Tikrinimas</a>
+            <a href="keyword.html" class="active">Atrask pagal Slaptažodį</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>Atrask Slėptuvę pagal Slaptažodį</h2>
+            <div class="form-group">
+                <label for="keywordInput">Įveskite slaptažodį:</label>
+                <input type="text" id="keywordInput" placeholder="Slaptažodis">
+            </div>
+            <button onclick="findCoordinatesByKeyword()">Rodyti Koordinates</button>
+            <div id="result"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Geocaching Pagalbininkas. Visos teisės saugomos.</p>
+    </footer>
+
+    <script>
+        async function findCoordinatesByKeyword() {
+            const userInput = document.getElementById('keywordInput').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            resultDiv.innerHTML = '';
+            resultDiv.className = '';
+
+            if (!userInput) {
+                resultDiv.textContent = 'Įveskite slaptažodį!';
+                resultDiv.className = 'result-error';
+                return;
+            }
+
+            try {
+                const response = await fetch('keyword-data.json');
+                if (!response.ok) {
+                    throw new Error('Nepavyko gauti duomenų.');
+                }
+                const caches = await response.json();
+
+                const foundCache = caches.find(cache => cache.keyword.toLowerCase() === userInput.toLowerCase());
+
+                if (foundCache) {
+                    // Atnaujinta dalis, įtraukianti slėptuvės pavadinimą
+                    resultDiv.innerHTML = `Slėptuvės pavadinimas: <strong>${foundCache.id}</strong><br>Slėptuvės koordinatės: <br><strong>${foundCache.coordinates}</strong>`;
+                    resultDiv.className = 'result-success';
+                } else {
+                    resultDiv.textContent = '❌ Slaptažodis neteisingas arba tokia slėptuvė neegzistuoja.';
+                    resultDiv.className = 'result-error';
+                }
+            } catch (error) {
+                resultDiv.textContent = `Klaida: ${error.message}`;
+                resultDiv.className = 'result-error';
+            }
+        }
+    </script>
+</body>
+</html>
