@@ -1,16 +1,17 @@
-/* --- Baziniai nustatymai --- */
+/* --- Tamsios temos nustatymai --- */
 :root {
-    --primary-color: #007BFF; /* Mėlyna */
-    --secondary-color: #28a745; /* Žalia */
-    --background-color: #f4f7f6; /* Šviesiai pilka fono spalva */
-    --text-color: #333; /* Tamsi teksto spalva */
-    --container-bg: #ffffff; /* Konteinerio fono spalva */
-    --border-radius: 8px; /* Užapvalinti kampai */
-    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --primary-color: #66b2ff; /* Šviesesnė mėlyna */
+    --secondary-color: #58d87a; /* Šviesesnė žalia */
+    --background-color: #121212; /* Labai tamsi fono spalva */
+    --text-color: #e0e0e0; /* Šviesus tekstas */
+    --container-bg: #1f1f1f; /* Tamsi konteinerio fono spalva */
+    --border-radius: 12px;
+    --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    --accent-color: #ff8c42; /* Ryški oranžinė akcento spalva */
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Lato', sans-serif;
     margin: 0;
     background-color: var(--background-color);
     color: var(--text-color);
@@ -21,8 +22,8 @@ body {
 
 /* --- Antraštė (Header) ir Poraštė (Footer) --- */
 header, footer {
-    background-color: var(--primary-color);
-    color: white;
+    background-color: #1a1a1a;
+    color: var(--text-color);
     padding: 1.5rem 2rem;
     text-align: center;
     box-shadow: var(--box-shadow);
@@ -31,25 +32,29 @@ header, footer {
 header h1 {
     margin: 0;
     font-size: 2rem;
+    font-weight: 700;
 }
 
 header nav a {
-    color: white;
+    color: var(--primary-color);
     margin: 0 15px;
     text-decoration: none;
     font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    padding: 8px 15px;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 header nav a:hover, header nav a.active {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(102, 178, 255, 0.15);
+    transform: translateY(-2px);
 }
 
 footer {
-    margin-top: auto; /* Prispaudžia poraštę prie apačios */
+    margin-top: auto;
     font-size: 0.9rem;
+    padding: 1rem 2rem;
+    color: #999;
 }
 
 /* --- Pagrindinis turinys --- */
@@ -74,69 +79,96 @@ main {
 .container h2 {
     margin-top: 0;
     color: var(--primary-color);
-    font-size: 1.8rem;
+    font-size: 2rem;
+    margin-bottom: 2rem;
 }
 
 /* --- Formos elementai --- */
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     text-align: left;
 }
 
 label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.7rem;
     font-weight: bold;
+    color: var(--text-color);
 }
 
 input[type="text"] {
     width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ccc;
+    padding: 1rem;
+    border: 2px solid #333;
+    background-color: #2b2b2b;
+    color: var(--text-color);
     border-radius: var(--border-radius);
-    box-sizing: border-box; /* Svarbu, kad padding'as nepridėtų pločio */
-    transition: border-color 0.3s;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 input[type="text"]:focus {
     border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 178, 255, 0.25);
     outline: none;
 }
 
 button {
     background-color: var(--secondary-color);
-    color: white;
+    color: #121212;
     border: none;
-    padding: 0.8rem 1.5rem;
+    padding: 1rem 2rem;
     border-radius: var(--border-radius);
-    font-size: 1rem;
+    font-size: 1.1rem;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
     width: 100%;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 button:hover {
-    background-color: #218838; /* Tamsesnė žalia */
-    transform: translateY(-2px);
+    background-color: #48c46a;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
 /* --- Rezultatų blokas --- */
 #result {
-    margin-top: 1.5rem;
-    padding: 1rem;
+    margin-top: 2rem;
+    padding: 1.5rem;
     border-radius: var(--border-radius);
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    border: 1px solid transparent;
 }
 
 .result-success {
-    background-color: #d4edda; /* Šviesiai žalia */
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    background-color: #2c3e2e;
+    color: #d4edda;
+    border-color: #3b5a3e;
 }
 
 .result-error {
-    background-color: #f8d7da; /* Šviesiai raudona */
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+    background-color: #5e3b3d;
+    color: #f8d7da;
+    border-color: #724c4e;
+}
+
+/* --- Reaktyvus dizainas --- */
+@media (max-width: 768px) {
+    header, footer, main {
+        padding: 1rem;
+    }
+
+    header nav {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .container {
+        padding: 1.5rem;
+    }
 }
