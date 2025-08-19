@@ -35,9 +35,9 @@
     <header>
         <h1>Geocaching Įrankiai</h1>
         <nav>
-            <a href="index">Pradžia</a>
-            <a href="checker">Koordinačių Tikrinimas</a>
-            <a href="keyword" class="active">Atrask pagal Slaptažodį</a>
+            <a href="index.html">Pradžia</a>
+            <a href="checker.html">Koordinačių Tikrinimas</a>
+            <a href="keyword.html" class="active">Atrask pagal Slaptažodį</a>
         </nav>
     </header>
 
@@ -72,7 +72,7 @@
             }
 
             try {
-                const response = await fetch('data.json');
+                const response = await fetch('keyword-data.json');
                 if (!response.ok) {
                     throw new Error('Nepavyko gauti duomenų.');
                 }

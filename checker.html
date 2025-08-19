@@ -28,6 +28,14 @@
             color: #cc0000;
             border: 1px solid #cc0000;
         }
+        #result a {
+            color: #1a751a;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        #result a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -35,9 +43,9 @@
     <header>
         <h1>Geocaching Įrankiai</h1>
         <nav>
-            <a href="index">Pradžia</a>
-            <a href="checker" class="active">Koordinačių Tikrinimas</a>
-            <a href="keyword">Atrask pagal Slaptažodį</a>
+            <a href="index.html">Pradžia</a>
+            <a href="checker.html" class="active">Koordinačių Tikrinimas</a>
+            <a href="keyword.html">Atrask pagal Slaptažodį</a>
         </nav>
     </header>
 
@@ -45,7 +53,7 @@
         <div class="container">
             <h2>Patikrinkite Slėptuvės Koordinates</h2>
             <div class="form-group">
-                <label for="coordsInput">Įveskite koordinates (pvz., N 55° 43.116 E 21° 07.872):</label>
+                <label for="coordsInput">Įveskite koordinates:</label>
                 <input type="text" id="coordsInput" placeholder="N XX° XX.XXX E XX° XX.XXX" onkeydown="handleEnter(event)">
             </div>
             <button onclick="checkCoordinates()">Tikrinti</button>
