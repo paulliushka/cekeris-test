@@ -68,7 +68,7 @@
             return params.get('q');
         }
 
-        async function displayCacheInfo(cacheCode) {
+        async function displayCacheInfo(cacheKeyword) {
             const caches = await fetchCacheData();
             const resultDiv = document.getElementById('result');
             const codeInputForm = document.getElementById('code-input-form');
@@ -77,7 +77,7 @@
                 return;
             }
 
-            const foundCache = caches.find(cache => cache.code.toUpperCase() === cacheCode.toUpperCase());
+            const foundCache = caches.find(cache => cache.keyword.toUpperCase() === cacheKeyword.toUpperCase());
 
             if (foundCache) {
                 resultDiv.innerHTML = `
