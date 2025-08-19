@@ -1,14 +1,17 @@
-{
-  "caches": {
-    "GC6HNPB": {
-      "name": "Joensu Bird",
-      "lat": { "deg": 54, "min": 41.620 },
-      "lon": { "deg": 25, "min": 13.074 }
-    },
-    "GC9M1PA": {
-      "name": "Mokslų princesė",
-      "lat": { "deg": 54, "min": 42.111 },
-      "lon": { "deg": 25, "min": 14.222 }
-    }
+[
+  {
+    "id": "GC001",
+    "coordinates": "N 55° 43.116 E 21° 07.872",
+    "keyword": "Slibinas"
+  },
+  {
+    "id": "GC002",
+    "coordinates": "N 55° 42.324 E 21° 08.688",
+    "keyword": "Bokštas"
+  },
+  {
+    "id": "GC003",
+    "coordinates": "N 55° 41.652 E 21° 09.606",
+    "keyword": "Laikrodis"
   }
-}
+]
