@@ -48,7 +48,7 @@
                 <label for="keywordInput">Įveskite slaptažodį:</label>
                 <input type="text" id="keywordInput" placeholder="Slaptažodis" onkeydown="handleEnter(event)">
             </div>
-            <button onclick="findCoordinatesByKeyword()">Rodyti Koordinates</button>
+            <button onclick="findCoordinatesByKeyword()">Rodyti Slėptuvę</button>
             <div id="result"></div>
         </div>
     </main>
@@ -81,7 +81,7 @@
                 const foundCache = caches.find(cache => cache.keyword.toLowerCase() === userInput.toLowerCase());
 
                 if (foundCache) {
-                    resultDiv.innerHTML = `Slėptuvės pavadinimas: <strong>${foundCache.id}</strong><br>Slėptuvės koordinatės: <br><strong>${foundCache.coordinates}</strong>`;
+                    resultDiv.innerHTML = `✅ Teisingai! Slėptuvės pavadinimas: <a href="${foundCache.page}" target="_blank">${foundCache.name}</a>`;
                     resultDiv.className = 'result-success';
                 } else {
                     resultDiv.textContent = '❌ Slaptažodis neteisingas arba tokia slėptuvė neegzistuoja.';
