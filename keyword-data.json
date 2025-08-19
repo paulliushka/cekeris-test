@@ -2,13 +2,15 @@
   {
     "name": "Mokslų princesė (GC9M1PA)",
     "code": "GC9M1PA",
-    "keyword": "secret0",
+    "coordinates": "N 54° 42.634' E 025° 14.664'",
+    "keyword": "GC9M1PA",
     "page": "https://coord.info/GC9M1PA"
   },
   {
     "name": "Joensu Bird (GC6HNPB)",
     "code": "GC6HNPB",
-    "keyword": "secret1",
+    "coordinates": "N 54° 41.301' E 025° 12.518'",
+    "keyword": "GC6HNPB",
     "page": "https://coord.info/GC6HNPB"
   }
 ]
