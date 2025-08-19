@@ -4,30 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Čekeris</title>
-    <link rel="stylesheet" href="style.css">
     <style>
-        .container {
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        #result {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 1.1em;
-        }
-        .result-success {
-            background-color: #e6ffe6;
-            color: #1a751a;
-            border: 1px solid #4caf50;
-        }
-        .result-error {
-            background-color: #ffe6e6;
-            color: #cc0000;
-            border: 1px solid #cc0000;
-        }
+        body { font-family: sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 0; }
+        header { background-color: #4CAF50; color: white; padding: 1rem; text-align: center; }
+        header h1 { margin: 0; }
+        nav { margin-top: 10px; }
+        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
+        nav a.active { text-decoration: underline; }
+        main { padding: 20px; max-width: 600px; margin: 20px auto; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .container { text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        input[type="text"] { width: 80%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+        button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; }
+        button:hover { background-color: #45a049; }
+        #result, #codeResult { margin-top: 20px; padding: 15px; border-radius: 8px; font-size: 1.1em; word-wrap: break-word; }
+        .result-success { background-color: #e6ffe6; color: #1a751a; border: 1px solid #4caf50; }
+        .result-error { background-color: #ffe6e6; color: #cc0000; border: 1px solid #cc0000; }
+        footer { text-align: center; padding: 20px; margin-top: 20px; color: #777; }
+        /* Paslėpti elementą */
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -42,13 +38,23 @@
     </header>
 
     <main>
-        <div class="container">
-            <h2>Atrask Slėptuvę pagal Slaptažodį</h2>
+        <div id="codeSection" class="container">
+            <h2>Įveskite Slėptuvės Kodą</h2>
             <div class="form-group">
-                <label for="keywordInput">Įveskite slaptažodį:</label>
-                <input type="text" id="keywordInput" placeholder="Slaptažodis" onkeydown="handleEnter(event)">
+                <label for="codeInput">Kodas:</label>
+                <input type="text" id="codeInput" placeholder="Pvz., GC12345" onkeydown="handleCodeEnter(event)">
             </div>
-            <button onclick="findCoordinatesByKeyword()">Rodyti Slėptuvę</button>
+            <button onclick="checkCode()">Tikrinti kodą</button>
+            <div id="codeResult"></div>
+        </div>
+
+        <div id="keywordSection" class="container hidden">
+            <h2>Atrask Slėptuvę pagal Raktažodį</h2>
+            <div class="form-group">
+                <label for="keywordInput">Įveskite raktažodį:</label>
+                <input type="text" id="keywordInput" placeholder="Raktažodis" onkeydown="handleKeywordEnter(event)">
+            </div>
+            <button onclick="checkKeyword()">Rodyti Slėptuvę</button>
             <div id="result"></div>
         </div>
     </main>
@@ -58,44 +64,87 @@
     </footer>
 
     <script>
-        async function findCoordinatesByKeyword() {
-            const userInput = document.getElementById('keywordInput').value.trim();
-            const resultDiv = document.getElementById('result');
+        let allCaches = [];
+        let currentCache = null;
+
+        // Užkrauname duomenis iš JSON failo iš karto, kai pasileidžia puslapis
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('keyword-data.json');
+                if (!response.ok) {
+                    throw new Error('Nepavyko užkrauti duomenų failo.');
+                }
+                allCaches = await response.json();
+            } catch (error) {
+                document.getElementById('codeResult').textContent = `Kritinė klaida: ${error.message}`;
+                document.getElementById('codeResult').className = 'result-error';
+            }
+        });
+
+        // 1. Funkcija, tikrinanti KODĄ
+        function checkCode() {
+            const codeInput = document.getElementById('codeInput').value.trim();
+            const codeResultDiv = document.getElementById('codeResult');
             
+            codeResultDiv.innerHTML = '';
+            codeResultDiv.className = '';
+
+            if (!codeInput) {
+                codeResultDiv.textContent = 'Įveskite kodą!';
+                codeResultDiv.className = 'result-error';
+                return;
+            }
+
+            // Ieškome slėptuvės pagal įvestą kodą
+            currentCache = allCaches.find(cache => cache.code.toLowerCase() === codeInput.toLowerCase());
+
+            if (currentCache) {
+                // Jei kodas teisingas, paslepiame kodo sekciją ir parodome raktažodžio sekciją
+                document.getElementById('codeSection').classList.add('hidden');
+                document.getElementById('keywordSection').classList.remove('hidden');
+                document.getElementById('keywordInput').focus(); // Automatiškai fokusuojame įvedimo lauką
+            } else {
+                codeResultDiv.textContent = '❌ Toks kodas nerastas.';
+                codeResultDiv.className = 'result-error';
+            }
+        }
+
+        // 2. Funkcija, tikrinanti RAKTAŽODĮ (veikia tik po to, kai kodas buvo sėkmingai patikrintas)
+        function checkKeyword() {
+            const keywordInput = document.getElementById('keywordInput').value.trim();
+            const resultDiv = document.getElementById('result');
+
             resultDiv.innerHTML = '';
             resultDiv.className = '';
 
-            if (!userInput) {
-                resultDiv.textContent = 'Įveskite slaptažodį!';
+            if (!keywordInput) {
+                resultDiv.textContent = 'Įveskite raktažodį!';
                 resultDiv.className = 'result-error';
                 return;
             }
 
-            try {
-                const response = await fetch('keyword-data.json');
-                if (!response.ok) {
-                    throw new Error('Nepavyko gauti duomenų.');
-                }
-                const caches = await response.json();
-
-                const foundCache = caches.find(cache => cache.keyword.toLowerCase() === userInput.toLowerCase());
-
-                if (foundCache) {
-                    resultDiv.innerHTML = `✅ Teisingai! Slėptuvės pavadinimas: <a href="${foundCache.page}" target="_blank">${foundCache.name}</a>`;
-                    resultDiv.className = 'result-success';
-                } else {
-                    resultDiv.textContent = '❌ Slaptažodis neteisingas arba tokia slėptuvė neegzistuoja.';
-                    resultDiv.className = 'result-error';
-                }
-            } catch (error) {
-                resultDiv.textContent = `Klaida: ${error.message}`;
+            // Tikriname, ar įvestas raktažodis atitinka rastos slėptuvės raktažodį
+            if (currentCache && currentCache.keyword.toLowerCase() === keywordInput.toLowerCase()) {
+                resultDiv.innerHTML = `✅ <strong>Teisingai!</strong><br><br>
+                                       <strong>Pavadinimas:</strong> <a href="${currentCache.page}" target="_blank">${currentCache.name}</a><br>
+                                       <strong>Koordinatės:</strong> ${currentCache.coordinates}`;
+                resultDiv.className = 'result-success';
+            } else {
+                resultDiv.textContent = '❌ Raktažodis neteisingas. Bandykite dar kartą.';
                 resultDiv.className = 'result-error';
             }
         }
         
-        function handleEnter(event) {
+        // Funkcijos, leidžiančios patvirtinti įvedimą su "Enter" klavišu
+        function handleCodeEnter(event) {
             if (event.key === 'Enter') {
-                findCoordinatesByKeyword();
+                checkCode();
+            }
+        }
+
+        function handleKeywordEnter(event) {
+            if (event.key === 'Enter') {
+                checkKeyword();
             }
         }
     </script>
