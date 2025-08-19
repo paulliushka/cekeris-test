@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <title>Čekeris - Pagrindinis</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand">
+        <div class="brand-logo">Č</div>
+        <span class="brand-title">Čekeris</span>
+      </a>
+      <nav class="nav">
+        <a href="checker.html">Čekeris</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Geocaching koordinacių tikrintuvas</h1>
+      <p>Įvesk slaptažodį ir gauk slėptuvės koordinates.</p>
+    </section>
+
+    <section class="card checker">
+      <h2>Slaptažodžio tikrinimas</h2>
+      <form id="password-form">
+        <label for="password">Slaptažodis:</label>
+        <input type="text" id="password" class="input" required>
+        <button type="submit" class="button">Tikrinti</button>
+      </form>
+      <div id="password-result" class="result"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© 2025 Čekeris</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <title>Čekeris - Koordinačių tikrinimas</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand">
+        <div class="brand-logo">Č</div>
+        <span class="brand-title">Čekeris</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Pradžia</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1 id="cache-title">Koordinačių tikrinimas</h1>
+      <p id="cache-info">Įvesk savo išspręstąsias koordinates:</p>
+    </section>
+
+    <section class="card checker hidden" id="checker-section">
+      <form id="coords-form">
+        <div>
+          <label>Platuma (N):</label>
+          <input type="number" id="lat-deg" class="input" placeholder="54" required> °
+          <input type="number" step="0.001" id="lat-min" class="input" placeholder="41.620" required>
+        </div>
+
+        <div>
+          <label>Ilguma (E):</label>
+          <input type="number" id="lon-deg" class="input" placeholder="25" required> °
+          <input type="number" step="0.001" id="lon-min" class="input" placeholder="13.074" required>
+        </div>
+
+        <button type="submit" class="button">Tikrinti</button>
+      </form>
+      <div id="coords-result" class="result"></div>
+    </section>
+
+    <div id="error-msg" class="alert danger hidden">❌ Slėptuvė nerasta.</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© 2025 Čekeris</span>
+    </div>
+  </footer>
+</body>
+</html>

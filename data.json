@@ -1,0 +1,14 @@
+{
+  "caches": {
+    "GC6HNPB": {
+      "name": "Joensu Bird",
+      "lat": { "deg": 54, "min": 41.620 },
+      "lon": { "deg": 25, "min": 13.074 }
+    },
+    "GC9M1PA": {
+      "name": "Mokslų princesė",
+      "lat": { "deg": 54, "min": 42.111 },
+      "lon": { "deg": 25, "min": 14.222 }
+    }
+  }
+}
