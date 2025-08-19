@@ -16,22 +16,22 @@
 
     <main>
         <div id="codeSection" class="container">
-            <h2>Įveskite Slėptuvės Kodą</h2>
+            <h2>Enter Cache GeoCode</h2>
             <div class="form-group">
-                <label for="codeInput">Kodas:</label>
-                <input type="text" id="codeInput" placeholder="Pvz., GC12345" onkeydown="handleCodeEnter(event)">
+                <label for="codeInput">GeoCode:</label>
+                <input type="text" id="codeInput" placeholder="GCXXXXX" onkeydown="handleCodeEnter(event)">
             </div>
-            <button onclick="checkCode()">Tikrinti kodą</button>
+            <button onclick="checkCode()">Next</button>
             <div id="codeResult"></div>
         </div>
 
         <div id="keywordSection" class="container hidden">
-            <h2>Atrask Slėptuvę pagal Raktažodį</h2>
+            <h2>Check Cache Keyword</h2>
             <div class="form-group">
-                <label for="keywordInput">Įveskite raktažodį:</label>
-                <input type="text" id="keywordInput" placeholder="Raktažodis" onkeydown="handleKeywordEnter(event)">
+                <label for="keywordInput">Keyword:</label>
+                <input type="text" id="keywordInput" placeholder="GoldenKey" onkeydown="handleKeywordEnter(event)">
             </div>
-            <button onclick="checkKeyword()">Rodyti Slėptuvę</button>
+            <button onclick="checkKeyword()">Check</button>
             <div id="result"></div>
         </div>
     </main>
@@ -49,11 +49,11 @@
             try {
                 const response = await fetch('keyword-data.json');
                 if (!response.ok) {
-                    throw new Error('Nepavyko užkrauti duomenų failo.');
+                    throw new Error('Failed to load');
                 }
                 allCaches = await response.json();
             } catch (error) {
-                document.getElementById('codeResult').textContent = `Kritinė klaida: ${error.message}`;
+                document.getElementById('codeResult').textContent = `Critical error: ${error.message}`;
                 document.getElementById('codeResult').className = 'result-error';
             }
         });
@@ -67,7 +67,7 @@
             codeResultDiv.className = '';
 
             if (!codeInput) {
-                codeResultDiv.textContent = 'Įveskite kodą!';
+                codeResultDiv.textContent = 'Input cannot be empty!';
                 codeResultDiv.className = 'result-error';
                 return;
             }
@@ -81,7 +81,7 @@
                 document.getElementById('keywordSection').classList.remove('hidden');
                 document.getElementById('keywordInput').focus(); // Automatiškai fokusuojame įvedimo lauką
             } else {
-                codeResultDiv.textContent = '❌ Toks kodas nerastas.';
+                codeResultDiv.textContent = 'Cache not found';
                 codeResultDiv.className = 'result-error';
             }
         }
@@ -95,19 +95,19 @@
             resultDiv.className = '';
 
             if (!keywordInput) {
-                resultDiv.textContent = 'Įveskite raktažodį!';
+                resultDiv.textContent = 'Input cannot be empty!';
                 resultDiv.className = 'result-error';
                 return;
             }
 
             // Tikriname, ar įvestas raktažodis atitinka rastos slėptuvės raktažodį
             if (currentCache && currentCache.keyword.toLowerCase() === keywordInput.toLowerCase()) {
-                resultDiv.innerHTML = `✅ <strong>Teisingai!</strong><br><br>
-                                       <strong>Pavadinimas:</strong> <a href="${currentCache.page}" target="_blank">${currentCache.name}</a><br>
-                                       <strong>Koordinatės:</strong> ${currentCache.coordinates}`;
+                resultDiv.innerHTML = `✅ <strong>Correct!</strong><br><br>
+                                       <strong>You have found:</strong> <a href="${currentCache.page}" target="_blank">${currentCache.name}</a><br>
+                                       <strong>Final coordinates:</strong> ${currentCache.coordinates}`;
                 resultDiv.className = 'result-success';
             } else {
-                resultDiv.textContent = '❌ Raktažodis neteisingas. Bandykite dar kartą.';
+                resultDiv.textContent = 'Incorrect keyword';
                 resultDiv.className = 'result-error';
             }
         }
