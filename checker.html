@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koordinačių Tikrinimas</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .cache-info a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .cache-info a:hover {
+            text-decoration: underline;
+        }
+        .form-group.hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
@@ -20,11 +33,13 @@
     <main>
         <div class="container">
             <h2>Patikrinkite Slėptuvės Koordinates</h2>
-            <div class="form-group">
-                <label for="coordsInput">Įveskite koordinates (pvz., N 55° 43.116 E 21° 07.872):</label>
-                <input type="text" id="coordsInput" placeholder="N XX° XX.XXX E XX° XX.XXX">
+            
+            <div class="form-group" id="code-input-form">
+                <label for="code-input">Įveskite slėptuvės kodą:</label>
+                <input type="text" id="code-input" placeholder="Pvž. GC9M1PA">
+                <button onclick="checkCacheCode()">Tikrinti</button>
             </div>
-            <button onclick="checkCoordinates()">Tikrinti</button>
+            
             <div id="result"></div>
         </div>
     </main>
@@ -34,43 +49,68 @@
     </footer>
 
     <script>
-        async function checkCoordinates() {
-            const userInput = document.getElementById('coordsInput').value.trim();
-            const resultDiv = document.getElementById('result');
-            
-            resultDiv.innerHTML = '';
-            resultDiv.className = '';
-
-            if (!userInput) {
-                resultDiv.textContent = 'Įveskite koordinates!';
-                resultDiv.className = 'result-error';
-                return;
-            }
-            
+        async function fetchCacheData() {
             try {
                 const response = await fetch('checker-data.json');
                 if (!response.ok) {
                     throw new Error('Nepavyko gauti duomenų.');
                 }
-                const caches = await response.json();
-                
-                // Normalizuojame vartotojo įvestį: pašaliname tarpus, laipsnių ženklą (°)
-                // ir paverčiame mažosiomis raidėmis, kad palyginimas būtų tikslus.
-                const normalize = (str) => str.replace(/[\s°]/g, '').toLowerCase();
-                const normalizedInput = normalize(userInput);
-
-                const found = caches.some(cache => normalize(cache.coordinates) === normalizedInput);
-
-                if (found) {
-                    resultDiv.textContent = '✅ Teisingai! Šios koordinatės atitinka vieną iš slėptuvių.';
-                    resultDiv.className = 'result-success';
-                } else {
-                    resultDiv.textContent = '❌ Deja, tokios koordinatės nerastos. Bandykite dar kartą.';
-                    resultDiv.className = 'result-error';
-                }
+                return await response.json();
             } catch (error) {
-                resultDiv.textContent = `Klaida: ${error.message}`;
+                console.error('Klaida gaunant duomenis:', error);
+                document.getElementById('result').textContent = 'Klaida: Nepavyko užkrauti duomenų. ' + error.message;
+                return null;
+            }
+        }
+
+        function getCacheCodeFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('q');
+        }
+
+        async function displayCacheInfo(cacheCode) {
+            const caches = await fetchCacheData();
+            const resultDiv = document.getElementById('result');
+            const codeInputForm = document.getElementById('code-input-form');
+
+            if (!caches) {
+                return;
+            }
+
+            const foundCache = caches.find(cache => cache.code.toUpperCase() === cacheCode.toUpperCase());
+
+            if (foundCache) {
+                resultDiv.innerHTML = `
+                    <p class="cache-info">
+                        <a href="${foundCache.page}" target="_blank">${foundCache.name}</a>
+                    </p>
+                    <p><strong>Koordinatės:</strong> ${foundCache.coordinates}</p>
+                `;
+                resultDiv.className = 'result-success';
+                codeInputForm.style.display = 'none'; // Paslėpti įvesties lauką
+            } else {
+                resultDiv.textContent = '❌ Slėptuvė su tokiu kodu nerasta.';
                 resultDiv.className = 'result-error';
+                codeInputForm.style.display = 'block'; // Rodyti įvesties lauką
+            }
+        }
+
+        function checkCacheCode() {
+            const userInput = document.getElementById('code-input').value.trim();
+            if (userInput) {
+                window.location.href = `checker.html?q=${userInput}`;
+            }
+        }
+
+        // Tikriname URL užklausos parametrus puslapiui užsikrovus
+        window.onload = function() {
+            const cacheCode = getCacheCodeFromUrl();
+            if (cacheCode) {
+                displayCacheInfo(cacheCode);
+            } else {
+                // Jei kodo nėra, rodomas įvesties laukas
+                document.getElementById('code-input-form').style.display = 'block';
+                document.getElementById('result').textContent = '';
             }
         }
     </script>
