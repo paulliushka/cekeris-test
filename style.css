@@ -17,17 +17,6 @@ body {
   min-height: 100vh;
 }
 
-main {
-  flex: 1; /* užima visą tarpą tarp header ir footer */
-  padding: 30px;
-  max-width: 750px;
-  margin: 40px auto;
-  background: #111a13; /* tamsiai žalias konteineris */
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.7);
-  border: 1px solid rgba(76, 175, 80, 0.2);
-}
-
 /* Header */
 header {
   background: linear-gradient(135deg, #1b5e20, #2e7d32);
@@ -61,10 +50,29 @@ nav a.active {
   padding-bottom: 2px;
 }
 
-/* Forms */
+/* Main area */
+main {
+  flex: 1; /* užpildo tarpą tarp header ir footer */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Containers */
 .container {
+  width: 100%;
+  max-width: 750px;
+  background: #111a13; /* tamsiai žalias konteineris */
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  padding: 30px;
+  margin-bottom: 30px;
   text-align: center;
 }
+
+/* Forms */
 .form-group {
   margin-bottom: 20px;
   text-align: left;
