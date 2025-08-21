@@ -59,6 +59,11 @@ main {
   padding: 40px 20px;
 }
 
+.hidden {
+  display: none !important;
+}
+
+
 /* Containers */
 .container {
   width: 100%;

@@ -1,60 +1,59 @@
 <!DOCTYPE html>
 <html lang="lt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkeris</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkeris</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <h1>Checkeris</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="checker.html" class="active">Checker</a>
-        </nav>
-    </header>
+  <header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="checker" class="active">Checker</a>
+    </nav>
+  </header>
 
-    <main>
-        <!-- GeoCode Section -->
-        <section id="codeSection" class="container">
-            <h2>🔑 Enter Cache GeoCode</h2>
-            <div class="form-group">
-                <label for="codeInput">GeoCode:</label>
-                <input type="text" id="codeInput" placeholder="GCXXXXX" onkeydown="handleCodeEnter(event)">
-            </div>
-            <button onclick="checkCode()">Check</button>
-            <div id="codeResult"></div>
-        </section>
+  <main>
+    <!-- GeoCode įvedimo sekcija -->
+    <div id="codeSection" class="container">
+      <h2>Enter Cache GeoCode</h2>
+      <div class="form-group">
+        <label for="codeInput">GeoCode:</label>
+        <input type="text" id="codeInput" placeholder="GCXXXXX" onkeydown="handleCodeEnter(event)">
+      </div>
+      <button onclick="checkCode()">Next</button>
+      <div id="codeResult"></div>
+    </div>
 
-        <!-- Keyword Section (hidden by default) -->
-        <section id="keywordSection" class="container hidden">
-            <h2>📝 Check Cache Keyword</h2>
-            <div class="form-group">
-                <label for="keywordInput">Keyword:</label>
-                <input type="text" id="keywordInput" placeholder="GoldenKey" onkeydown="handleKeywordEnter(event)">
-            </div>
-            <button onclick="checkKeyword()">Check</button>
-            <div id="keywordResult"></div>
-        </section>
-        
-        <!-- Coordinates Section (hidden by default) -->
-        <section id="coordsSection" class="container hidden">
-            <h2>📍 Check Cache Coordinates</h2>
-            <div class="form-group">
-                <label for="coordsInput">Coordinates:</label>
-                <input type="text" id="coordsInput" placeholder="N XX° XX.XXX E XX° XX.XXX" onkeydown="handleCoordsEnter(event)">
-            </div>
-            <button onclick="checkCoordinates()">Check</button>
-            <div id="coordsResult"></div>
-        </section>
-    </main>
+    <!-- Keyword sekcija (paslėpta iš pradžių) -->
+    <div id="keywordSection" class="container hidden">
+      <h2>Check Cache Keyword</h2>
+      <div class="form-group">
+        <label for="keywordInput">Keyword:</label>
+        <input type="text" id="keywordInput" placeholder="GoldenKey" onkeydown="handleKeywordEnter(event)">
+      </div>
+      <button onclick="checkKeyword()">Check</button>
+      <div id="keywordResult"></div>
+    </div>
 
-    <footer>
-        <p>&copy; 2025 Checkeris. All rights reserved.</p>
-    </footer>
+    <!-- Coordinates sekcija (paslėpta iš pradžių) -->
+    <div id="coordsSection" class="container hidden">
+      <h2>Check Cache Coordinates</h2>
+      <div class="form-group">
+        <label for="coordsInput">Coordinates:</label>
+        <input type="text" id="coordsInput" placeholder="N XX° XX.XXX E XX° XX.XXX" onkeydown="handleCoordsEnter(event)">
+      </div>
+      <button onclick="checkCoordinates()">Check</button>
+      <div id="coordsResult"></div>
+    </div>
+  </main>
 
-    <script src="script.js"></script>
+  <footer>
+    <p>&copy; 2025 Checkeris. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
