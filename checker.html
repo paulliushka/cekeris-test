@@ -9,42 +9,46 @@
 <body>
 
     <header>
+        <h1>Checkeris</h1>
         <nav>
             <a href="index.html">Home</a>
-            <a href="checker" class="active">Checker</a>
-            </nav>
+            <a href="checker.html" class="active">Checker</a>
+        </nav>
     </header>
 
     <main>
-        <div id="codeSection" class="container">
-            <h2>Enter Cache GeoCode</h2>
+        <!-- GeoCode Section -->
+        <section id="codeSection" class="container">
+            <h2>🔑 Enter Cache GeoCode</h2>
             <div class="form-group">
                 <label for="codeInput">GeoCode:</label>
                 <input type="text" id="codeInput" placeholder="GCXXXXX" onkeydown="handleCodeEnter(event)">
             </div>
-            <button onclick="checkCode()">Next</button>
+            <button onclick="checkCode()">Check</button>
             <div id="codeResult"></div>
-        </div>
+        </section>
 
-        <div id="keywordSection" class="container hidden">
-            <h2>Check Cache Keyword</h2>
+        <!-- Keyword Section -->
+        <section id="keywordSection" class="container hidden">
+            <h2>📝 Check Cache Keyword</h2>
             <div class="form-group">
                 <label for="keywordInput">Keyword:</label>
                 <input type="text" id="keywordInput" placeholder="GoldenKey" onkeydown="handleKeywordEnter(event)">
             </div>
             <button onclick="checkKeyword()">Check</button>
             <div id="keywordResult"></div>
-        </div>
+        </section>
         
-        <div id="coordsSection" class="container hidden">
-            <h2>Check Cache Coordinates</h2>
+        <!-- Coordinates Section -->
+        <section id="coordsSection" class="container hidden">
+            <h2>📍 Check Cache Coordinates</h2>
             <div class="form-group">
                 <label for="coordsInput">Coordinates:</label>
                 <input type="text" id="coordsInput" placeholder="N XX° XX.XXX E XX° XX.XXX" onkeydown="handleCoordsEnter(event)">
             </div>
             <button onclick="checkCoordinates()">Check</button>
             <div id="coordsResult"></div>
-        </div>
+        </section>
     </main>
 
     <footer>
