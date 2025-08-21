@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="lt">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkeris</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -8,10 +10,9 @@
 
     <header>
         <nav>
-            <a href="index">Home</a>
+            <a href="index.html">Home</a>
             <a href="checker" class="active">Checker</a>
-            <a href="keyword">Keyword</a>
-        </nav>
+            </nav>
     </header>
 
     <main>
@@ -25,6 +26,16 @@
             <div id="codeResult"></div>
         </div>
 
+        <div id="keywordSection" class="container hidden">
+            <h2>Check Cache Keyword</h2>
+            <div class="form-group">
+                <label for="keywordInput">Keyword:</label>
+                <input type="text" id="keywordInput" placeholder="GoldenKey" onkeydown="handleKeywordEnter(event)">
+            </div>
+            <button onclick="checkKeyword()">Check</button>
+            <div id="keywordResult"></div>
+        </div>
+        
         <div id="coordsSection" class="container hidden">
             <h2>Check Cache Coordinates</h2>
             <div class="form-group">
@@ -32,7 +43,7 @@
                 <input type="text" id="coordsInput" placeholder="N XX° XX.XXX E XX° XX.XXX" onkeydown="handleCoordsEnter(event)">
             </div>
             <button onclick="checkCoordinates()">Check</button>
-            <div id="result"></div>
+            <div id="coordsResult"></div>
         </div>
     </main>
 
@@ -40,97 +51,6 @@
         <p>&copy; 2025 Checkeris. All rights reserved.</p>
     </footer>
 
-    <script>
-        let allCaches = [];
-        let currentCache = null;
-
-        // Užkrauname duomenis iš JSON failo iš karto, kai pasileidžia puslapis
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                const response = await fetch('checker-data.json');
-                if (!response.ok) {
-                    throw new Error('Failed to load');
-                }
-                allCaches = await response.json();
-            } catch (error) {
-                const resultDiv = document.getElementById('codeResult');
-                resultDiv.textContent = `Critical error: ${error.message}`;
-                resultDiv.className = 'result-error';
-            }
-        });
-
-        // 1. Funkcija, tikrinanti KODĄ
-        function checkCode() {
-            const codeInput = document.getElementById('codeInput').value.trim();
-            const codeResultDiv = document.getElementById('codeResult');
-            
-            codeResultDiv.innerHTML = '';
-            codeResultDiv.className = '';
-
-            if (!codeInput) {
-                codeResultDiv.textContent = 'Input cannot be empty!';
-                codeResultDiv.className = 'result-error';
-                return;
-            }
-
-            // Ieškome slėptuvės pagal įvestą kodą
-            currentCache = allCaches.find(cache => cache.code.toLowerCase() === codeInput.toLowerCase());
-
-            if (currentCache) {
-                // Jei kodas teisingas, pereiname prie koordinačių tikrinimo
-                document.getElementById('codeSection').classList.add('hidden');
-                document.getElementById('coordsSection').classList.remove('hidden');
-                document.getElementById('coordsInput').focus();
-            } else {
-                codeResultDiv.textContent = 'Cache not found';
-                codeResultDiv.className = 'result-error';
-            }
-        }
-
-        // Pagalbinė funkcija, kuri "normalizuoja" koordinačių eilutę,
-        // pašalindama tarpus ir simbolius, kad būtų galima lengvai palyginti.
-        const normalize = (str) => str.replace(/[\s°',.]/g, '').toLowerCase();
-
-        // 2. Funkcija, tikrinanti KOORDINATES
-        function checkCoordinates() {
-            const coordsInput = document.getElementById('coordsInput').value;
-            const resultDiv = document.getElementById('result');
-
-            resultDiv.innerHTML = '';
-            resultDiv.className = '';
-
-            if (!coordsInput) {
-                resultDiv.textContent = 'Input cannot be empty!';
-                resultDiv.className = 'result-error';
-                return;
-            }
-
-            // Normalizuojame vartotojo įvestį ir teisingas koordinates iš failo
-            const normalizedUserInput = normalize(coordsInput);
-            const normalizedCorrectCoords = normalize(currentCache.coordinates);
-
-            // Tikriname, ar įvestos koordinatės atitinka rastos slėptuvės koordinates
-            if (currentCache && normalizedUserInput === normalizedCorrectCoords) {
-                resultDiv.innerHTML = `✅ <strong>Correct!</strong>You have found: <strong>${currentCache.name}</strong>.`;
-                resultDiv.className = 'result-success';
-            } else {
-                resultDiv.textContent = 'Incorrect coordinates';
-                resultDiv.className = 'result-error';
-            }
-        }
-        
-        // Funkcijos, leidžiančios patvirtinti įvedimą su "Enter" klavišu
-        function handleCodeEnter(event) {
-            if (event.key === 'Enter') {
-                checkCode();
-            }
-        }
-
-        function handleCoordsEnter(event) {
-            if (event.key === 'Enter') {
-                checkCoordinates();
-            }
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
