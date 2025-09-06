@@ -70,19 +70,24 @@ main {
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.7);
   border: 1px solid rgba(76, 175, 80, 0.2);
-  padding: 35px;
-  margin-bottom: 35px;
+  padding: 30px;
+  margin-bottom: 30px;
   text-align: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  animation: fadeIn 0.5s ease;
 }
 .container:hover {
-  transform: translateY(-2px);
-  border: 1px solid rgba(129, 199, 132, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.8);
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Forms */
 .form-group {
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   text-align: left;
 }
 label {
@@ -93,7 +98,7 @@ label {
 }
 input[type="text"] {
   width: 100%;
-  padding: 14px 16px;
+  padding: 12px 15px;
   border-radius: 10px;
   border: 1px solid #2e7d32;
   background-color: #0f1a11;
@@ -104,14 +109,14 @@ input[type="text"] {
 input[type="text"]:focus {
   border-color: #66bb6a;
   outline: none;
-  box-shadow: 0 0 10px rgba(102,187,106,0.6);
+  box-shadow: 0 0 8px rgba(102,187,106,0.6);
 }
 
 /* Buttons */
 button {
   background: linear-gradient(135deg, #2e7d32, #43a047);
   color: white;
-  padding: 13px 30px;
+  padding: 12px 28px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -125,16 +130,19 @@ button:hover {
 }
 
 /* Results */
-#result, #codeResult, #keywordResult, #coordsResult {
+#result,
+#codeResult,
+#keywordResult,
+#coordsResult {
   display: none;
   margin-top: 25px;
-  padding: 20px;
-  border-radius: 12px;
-  font-size: 1.1em;
+  padding: 12px 15px;
+  border-radius: 10px;
+  font-size: 1rem;
   word-wrap: break-word;
-  opacity: 0;
-  transform: scale(0.95);
-  animation: fadeIn 0.3s ease forwards;
+  min-height: 48px; /* same height as input */
+  display: flex;
+  align-items: center; /* vertical centering */
 }
 .result-success {
   background-color: rgba(46, 125, 50, 0.2);
@@ -145,13 +153,6 @@ button:hover {
   background-color: rgba(183, 28, 28, 0.2);
   color: #ef5350;
   border: 1px solid #c62828;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 
 /* Footer */
