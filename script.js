@@ -25,7 +25,7 @@ function checkCode() {
     codeResultDiv.className = '';
 
     if (!codeInput) {
-        codeResultDiv.textContent = 'Įvesties laukas negali būti tuščias!';
+        codeResultDiv.textContent = 'input.empty.error';
         codeResultDiv.className = 'result-error';
         return;
     }
@@ -45,12 +45,12 @@ function checkCode() {
             document.getElementById('coordsSection').classList.remove('hidden');
             document.getElementById('coordsInput').focus();
         } else {
-            codeResultDiv.textContent = 'Rasta slėptuvė, bet jos tipas nenurodytas!';
+            codeResultDiv.textContent = 'input.cache.not.found';
             codeResultDiv.className = 'result-error';
             document.getElementById('codeSection').classList.remove('hidden'); // Parodome atgal
         }
     } else {
-        codeResultDiv.textContent = 'Slėptuvė nerasta.';
+        codeResultDiv.textContent = 'input.cache.not.found';
         codeResultDiv.className = 'result-error';
     }
 }
@@ -64,7 +64,7 @@ function checkKeyword() {
     resultDiv.className = '';
 
     if (!keywordInput) {
-        resultDiv.textContent = 'Įvesties laukas negali būti tuščias!';
+        resultDiv.textContent = 'input.empty.error';
         resultDiv.className = 'result-error';
         return;
     }
@@ -75,7 +75,7 @@ function checkKeyword() {
                                <strong>Galutinės koordinatės:</strong> ${currentCache.coordinates}`;
         resultDiv.className = 'result-success';
     } else {
-        resultDiv.textContent = 'Neteisingas raktažodis.';
+        resultDiv.textContent = 'input.incorrect.error';
         resultDiv.className = 'result-error';
     }
 }
@@ -92,7 +92,7 @@ function checkCoordinates() {
     resultDiv.className = '';
 
     if (!coordsInput) {
-        resultDiv.textContent = 'Įvesties laukas negali būti tuščias!';
+        resultDiv.textContent = 'input.empty.error';
         resultDiv.className = 'result-error';
         return;
     }
