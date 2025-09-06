@@ -140,10 +140,15 @@ button:hover {
   border-radius: 10px;
   font-size: 1rem;
   word-wrap: break-word;
-  min-height: 48px; /* same height as input */
-  display: flex;
-  align-items: center; /* vertical centering */
 }
+
+/* Visible results */
+.result-visible {
+  display: flex;
+  align-items: center;
+  min-height: 48px; /* same height as input */
+}
+
 .result-success {
   background-color: rgba(46, 125, 50, 0.2);
   color: #81c784;

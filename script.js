@@ -10,10 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     allCaches = await response.json();
   } catch (error) {
-    const codeResultDiv = document.getElementById('codeResult');
-    codeResultDiv.textContent = `Critical error: ${error.message}`;
-    codeResultDiv.className = 'result-error';
-    codeResultDiv.style.display = "flex";
+    showResult('codeResult', `Critical error: ${error.message}`, 'error');
   }
 });
 
@@ -21,8 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 function showResult(id, message, type) {
   const el = document.getElementById(id);
   el.textContent = message;
-  el.className = type === "error" ? "result-error" : "result-success";
-  el.style.display = "flex";
+  el.className = (type === "error" ? "result-error" : "result-success") + " result-visible";
 }
 
 function clearResult(id) {
@@ -76,8 +72,7 @@ function checkKeyword() {
     resultDiv.innerHTML = `✅ <strong>Correct!</strong><br><br>
                            <strong>Cache:</strong> <a href="${currentCache.page}" target="_blank">${currentCache.name}</a><br>
                            <strong>Final coordinates:</strong> ${currentCache.coordinates}`;
-    resultDiv.className = 'result-success';
-    resultDiv.style.display = "flex";
+    resultDiv.className = 'result-success result-visible';
   } else {
     showResult('keywordResult', 'Incorrect keyword.', 'error');
   }
@@ -103,8 +98,7 @@ function checkCoordinates() {
     const resultDiv = document.getElementById('coordsResult');
     resultDiv.innerHTML = `✅ <strong>Correct!</strong><br><br>
                            <strong>Cache:</strong> <a href="${currentCache.page}" target="_blank">${currentCache.name}</a>.`;
-    resultDiv.className = 'result-success';
-    resultDiv.style.display = "flex";
+    resultDiv.className = 'result-success result-visible';
   } else {
     showResult('coordsResult', 'Incorrect coordinates.', 'error');
   }
