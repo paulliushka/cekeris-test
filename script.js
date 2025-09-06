@@ -4,40 +4,45 @@ let currentCache = null;
 // Užkrauname duomenis iš VIENO JSON failo, kai pasileidžia puslapis
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch('data.json'); // Įkeliame iš naujo sujungto failo
+        const response = await fetch('data.json');
         if (!response.ok) {
             throw new Error('Nepavyko užkrauti duomenų failo (data.json).');
         }
         allCaches = await response.json();
     } catch (error) {
         const codeResultDiv = document.getElementById('codeResult');
-        codeResultDiv.textContent = `Kritinė klaida: ${error.message}`;
-        codeResultDiv.className = 'result-error';
+        showResult(codeResultDiv, `Kritinė klaida: ${error.message}`, 'error');
     }
 });
+
+/* Pagalbinės funkcijos rodyti / slėpti rezultatus */
+function showResult(el, message, type) {
+    el.innerHTML = message;
+    el.className = type === "error" ? "result-error" : "result-success";
+    el.style.display = "block";
+}
+function clearResult(el) {
+    el.innerHTML = "";
+    el.className = "";
+    el.style.display = "none";
+}
 
 // 1. Pagrindinė funkcija, tikrinanti GeoKodą
 function checkCode() {
     const codeInput = document.getElementById('codeInput').value.trim();
     const codeResultDiv = document.getElementById('codeResult');
-    
-    codeResultDiv.textContent = '';
-    codeResultDiv.className = '';
+    clearResult(codeResultDiv);
 
     if (!codeInput) {
-        codeResultDiv.textContent = 'input.empty.error';
-        codeResultDiv.className = 'result-error';
+        showResult(codeResultDiv, 'input.empty.error', 'error');
         return;
     }
 
-    // Ieškome slėptuvės pagal įvestą kodą visame masyve
     currentCache = allCaches.find(cache => cache.code.toLowerCase() === codeInput.toLowerCase());
 
     if (currentCache) {
-        // Paslepiame kodo įvedimo langą
         document.getElementById('codeSection').classList.add('hidden');
-        
-        // Patikriname, kokio tipo yra slėptuvė ir parodome atitinkamą sekciją
+
         if (currentCache.type === 'keyword') {
             document.getElementById('keywordSection').classList.remove('hidden');
             document.getElementById('keywordInput').focus();
@@ -45,13 +50,11 @@ function checkCode() {
             document.getElementById('coordsSection').classList.remove('hidden');
             document.getElementById('coordsInput').focus();
         } else {
-            codeResultDiv.textContent = 'input.cache.not.found';
-            codeResultDiv.className = 'result-error';
-            document.getElementById('codeSection').classList.remove('hidden'); // Parodome atgal
+            showResult(codeResultDiv, 'input.cache.not.found', 'error');
+            document.getElementById('codeSection').classList.remove('hidden');
         }
     } else {
-        codeResultDiv.textContent = 'input.cache.not.found';
-        codeResultDiv.className = 'result-error';
+        showResult(codeResultDiv, 'input.cache.not.found', 'error');
     }
 }
 
@@ -59,41 +62,35 @@ function checkCode() {
 function checkKeyword() {
     const keywordInput = document.getElementById('keywordInput').value.trim();
     const resultDiv = document.getElementById('keywordResult');
-
-    resultDiv.innerHTML = '';
-    resultDiv.className = '';
+    clearResult(resultDiv);
 
     if (!keywordInput) {
-        resultDiv.textContent = 'input.empty.error';
-        resultDiv.className = 'result-error';
+        showResult(resultDiv, 'input.empty.error', 'error');
         return;
     }
 
     if (currentCache && currentCache.keyword.toLowerCase() === keywordInput.toLowerCase()) {
-        resultDiv.innerHTML = `✅ <strong>Teisingai!</strong><br><br>
-                               <strong>Radote:</strong> <a href="${currentCache.page}" target="_blank">${currentCache.name}</a><br>
-                               <strong>Galutinės koordinatės:</strong> ${currentCache.coordinates}`;
-        resultDiv.className = 'result-success';
+        showResult(resultDiv,
+          `✅ <strong>Teisingai!</strong><br><br>
+           <strong>Radote:</strong> <a href="${currentCache.page}" target="_blank">${currentCache.name}</a><br>
+           <strong>Galutinės koordinatės:</strong> ${currentCache.coordinates}`,
+          'success');
     } else {
-        resultDiv.textContent = 'input.incorrect.error';
-        resultDiv.className = 'result-error';
+        showResult(resultDiv, 'input.incorrect.error', 'error');
     }
 }
 
-// Pagalbinė funkcija, kuri "normalizuoja" koordinačių eilutę
+// Pagalbinė funkcija normalizuoti koordinates
 const normalize = (str) => str.replace(/[\s°',.]/g, '').toLowerCase();
 
 // 3. Funkcija, tikrinanti KOORDINATES
 function checkCoordinates() {
     const coordsInput = document.getElementById('coordsInput').value;
     const resultDiv = document.getElementById('coordsResult');
-
-    resultDiv.innerHTML = '';
-    resultDiv.className = '';
+    clearResult(resultDiv);
 
     if (!coordsInput) {
-        resultDiv.textContent = 'input.empty.error';
-        resultDiv.className = 'result-error';
+        showResult(resultDiv, 'input.empty.error', 'error');
         return;
     }
     
@@ -101,30 +98,22 @@ function checkCoordinates() {
     const normalizedCorrectCoords = normalize(currentCache.coordinates);
 
     if (currentCache && normalizedUserInput === normalizedCorrectCoords) {
-        // ATNAUJINTA EILUTĖ: Pridėta nuoroda
-        resultDiv.innerHTML = `✅ <strong>Teisingai!</strong><br><br><strong>Radote:</strong> <a href="${currentCache.page}" target="_blank">${currentCache.name}</a>.`;
-        resultDiv.className = 'result-success';
+        showResult(resultDiv,
+          `✅ <strong>Teisingai!</strong><br><br>
+           <strong>Radote:</strong> <a href="${currentCache.page}" target="_blank">${currentCache.name}</a>.`,
+          'success');
     } else {
-        resultDiv.textContent = 'Neteisingos koordinatės.';
-        resultDiv.className = 'result-error';
+        showResult(resultDiv, 'Neteisingos koordinatės.', 'error');
     }
 }
 
-// Funkcijos, leidžiančios patvirtinti įvedimą su "Enter" klavišu
+// Funkcijos, leidžiančios patvirtinti įvedimą su "Enter"
 function handleCodeEnter(event) {
-    if (event.key === 'Enter') {
-        checkCode();
-    }
+    if (event.key === 'Enter') checkCode();
 }
-
 function handleKeywordEnter(event) {
-    if (event.key === 'Enter') {
-        checkKeyword();
-    }
+    if (event.key === 'Enter') checkKeyword();
 }
-
 function handleCoordsEnter(event) {
-    if (event.key === 'Enter') {
-        checkCoordinates();
-    }
+    if (event.key === 'Enter') checkCoordinates();
 }

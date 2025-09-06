@@ -63,7 +63,6 @@ main {
   display: none !important;
 }
 
-
 /* Containers */
 .container {
   width: 100%;
@@ -123,6 +122,7 @@ button:hover {
 
 /* Results */
 #result, #codeResult, #keywordResult, #coordsResult {
+  display: none; /* kompaktiškas: paslėptas kol nėra turinio */
   margin-top: 25px;
   padding: 20px;
   border-radius: 12px;
