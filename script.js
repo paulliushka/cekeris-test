@@ -1,7 +1,7 @@
 let allCaches = [];
 let currentCache = null;
 
-// Load data.json once the page is ready
+// Load data.json on page load
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const response = await fetch('data.json');
@@ -17,10 +17,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Utility functions to show / clear results
 function showResult(id, message, type) {
   const el = document.getElementById(id);
+  // If message contains HTML (links), the code uses innerHTML in callers.
+  // For simple messages we use textContent to avoid injection.
   el.textContent = message;
-  el.className =
-    (type === "error" ? "result-error" : "result-success") + " result-visible";
-  el.style.display = "flex"; // make visible
+  el.className = (type === "error" ? "result-error" : "result-success") + " result-visible";
+  el.style.display = "flex"; // make visible (flex so align-items works)
 }
 
 function clearResult(id) {
@@ -40,16 +41,13 @@ function checkCode() {
     return;
   }
 
-  // Find cache by code
   currentCache = allCaches.find(
-    cache => cache.code.toLowerCase() === codeInput.toLowerCase()
+    cache => cache.code && cache.code.toLowerCase() === codeInput.toLowerCase()
   );
 
   if (currentCache) {
-    // Hide code section
     document.getElementById('codeSection').classList.add('hidden');
 
-    // Show correct next section
     if (currentCache.type === 'keyword') {
       document.getElementById('keywordSection').classList.remove('hidden');
       document.getElementById('keywordInput').focus();
@@ -75,9 +73,9 @@ function checkKeyword() {
     return;
   }
 
-  if (currentCache && currentCache.keyword.toLowerCase() === keywordInput.toLowerCase()) {
+  if (currentCache && currentCache.keyword && currentCache.keyword.toLowerCase() === keywordInput.toLowerCase()) {
     const html = `✅ <strong>Correct!</strong><br><br>
-                  <strong>You found:</strong> <a href="${currentCache.page}" target="_blank">${currentCache.name}</a><br>
+                  <strong>You found:</strong> <a href="${currentCache.page}" target="_blank" rel="noopener">${currentCache.name}</a><br>
                   <strong>Final coordinates:</strong> ${currentCache.coordinates}`;
     const el = document.getElementById("keywordResult");
     el.innerHTML = html;
@@ -89,7 +87,7 @@ function checkKeyword() {
 }
 
 // Helper: normalize coordinates
-const normalize = (str) => str.replace(/[\s°',.]/g, '').toLowerCase();
+const normalize = (str = "") => str.replace(/[\s°',.]/g, '').toLowerCase();
 
 // 3. Coordinates checker
 function checkCoordinates() {
@@ -102,11 +100,11 @@ function checkCoordinates() {
   }
 
   const normalizedUserInput = normalize(coordsInput);
-  const normalizedCorrectCoords = normalize(currentCache.coordinates);
+  const normalizedCorrectCoords = normalize(currentCache && currentCache.coordinates ? currentCache.coordinates : "");
 
   if (currentCache && normalizedUserInput === normalizedCorrectCoords) {
     const html = `✅ <strong>Correct!</strong><br><br>
-                  <strong>You found:</strong> <a href="${currentCache.page}" target="_blank">${currentCache.name}</a>.`;
+                  <strong>You found:</strong> <a href="${currentCache.page}" target="_blank" rel="noopener">${currentCache.name}</a>.`;
     const el = document.getElementById("coordsResult");
     el.innerHTML = html;
     el.className = "result-success result-visible";
@@ -118,19 +116,11 @@ function checkCoordinates() {
 
 // Enter key handlers
 function handleCodeEnter(event) {
-  if (event.key === 'Enter') {
-    checkCode();
-  }
+  if (event.key === 'Enter') checkCode();
 }
-
 function handleKeywordEnter(event) {
-  if (event.key === 'Enter') {
-    checkKeyword();
-  }
+  if (event.key === 'Enter') checkKeyword();
 }
-
 function handleCoordsEnter(event) {
-  if (event.key === 'Enter') {
-    checkCoordinates();
-  }
+  if (event.key === 'Enter') checkCoordinates();
 }
