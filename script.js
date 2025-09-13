@@ -9,6 +9,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       throw new Error('Failed to load data.json file.');
     }
     allCaches = await response.json();
+
+    // Naujas kodas: patikrinti ar yra ?code=... URL parametras
+    const params = new URLSearchParams(window.location.search);
+    let autoCode = params.get('code');
+    if (autoCode) {
+      autoCode = decodeURIComponent(autoCode).trim().slice(0, 20); // apsauga, max 20 simb.
+      const input = document.getElementById('codeInput');
+      if (input) {
+        input.value = autoCode;
+        checkCode(); // paleisti lyg būtum paspaudęs Next
+      }
+    }
+
   } catch (error) {
     showResult("codeResult", `Critical error: ${error.message}`, "error");
   }
