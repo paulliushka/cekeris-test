@@ -5,43 +5,53 @@ let currentCache = null;
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const response = await fetch('data.json');
-    if (!response.ok) {
-      throw new Error('Failed to load data.json file.');
-    }
+    if (!response.ok) throw new Error('Failed to load data.json file.');
+
     allCaches = await response.json();
 
-    // Naujas kodas: patikrinti ar yra ?code=... URL parametras
+    // Check if there is a ?code=... URL parameter
     const params = new URLSearchParams(window.location.search);
     let autoCode = params.get('code');
     if (autoCode) {
-      autoCode = decodeURIComponent(autoCode).trim().slice(0, 20); // apsauga, max 20 simb.
+      autoCode = decodeURIComponent(autoCode).trim().slice(0, 20); // sanitize, max 20 chars
       const input = document.getElementById('codeInput');
       if (input) {
         input.value = autoCode;
-        checkCode(); // paleisti lyg būtum paspaudęs Next
+        checkCode();
       }
     }
-
   } catch (error) {
     showResult("codeResult", `Critical error: ${error.message}`, "error");
   }
 });
 
-// Utility functions to show / clear results
-function showResult(id, message, type) {
+// Utility function to show / clear results
+// Accepts text or HTML
+function showResult(id, content, type = "success", isHTML = false) {
   const el = document.getElementById(id);
-  // If message contains HTML (links), the code uses innerHTML in callers.
-  // For simple messages we use textContent to avoid injection.
-  el.textContent = message;
+  if (isHTML) el.innerHTML = content;
+  else el.textContent = content;
+
   el.className = (type === "error" ? "result-error" : "result-success") + " result-visible";
-  el.style.display = "flex"; // make visible (flex so align-items works)
+  el.style.display = "flex";
 }
 
+// Clears a result element
 function clearResult(id) {
   const el = document.getElementById(id);
   el.textContent = "";
   el.className = "";
-  el.style.display = "none"; // hide completely
+  el.style.display = "none";
+}
+
+// Helper: show success message in 3-line format
+function showSuccess(cache, elementId) {
+  const html = `
+    <div class="result-line">✅ <strong>Correct!</strong></div>
+    <div class="result-line"><a href="${cache.page}" target="_blank" rel="noopener">${cache.name} (${cache.code})</a></div>
+    <div class="result-line">Final coordinates: ${cache.coordinates}</div>
+  `;
+  showResult(elementId, html, "success", true);
 }
 
 // 1. GeoCode checker
@@ -50,7 +60,7 @@ function checkCode() {
   clearResult("codeResult");
 
   if (!codeInput) {
-    showResult("codeResult", "Please enter a GeoCode.", "error");
+    showResult("codeResult", "Please enter the GC Code", "error");
     return;
   }
 
@@ -58,21 +68,22 @@ function checkCode() {
     cache => cache.code && cache.code.toLowerCase() === codeInput.toLowerCase()
   );
 
-  if (currentCache) {
-    document.getElementById('codeSection').classList.add('hidden');
+  if (!currentCache) {
+    showResult("codeResult", "Cache not found", "error");
+    return;
+  }
 
-    if (currentCache.type === 'keyword') {
-      document.getElementById('keywordSection').classList.remove('hidden');
-      document.getElementById('keywordInput').focus();
-    } else if (currentCache.type === 'coords') {
-      document.getElementById('coordsSection').classList.remove('hidden');
-      document.getElementById('coordsInput').focus();
-    } else {
-      showResult("codeResult", "Cache type not recognized.", "error");
-      document.getElementById('codeSection').classList.remove('hidden');
-    }
+  document.getElementById('codeSection').classList.add('hidden');
+
+  if (currentCache.type === 'keyword') {
+    document.getElementById('keywordSection').classList.remove('hidden');
+    document.getElementById('keywordInput').focus();
+  } else if (currentCache.type === 'coords') {
+    document.getElementById('coordsSection').classList.remove('hidden');
+    document.getElementById('coordsInput').focus();
   } else {
-    showResult("codeResult", "Cache not found. Please check the GeoCode.", "error");
+    showResult("codeResult", "Unrecognized cache type", "error");
+    document.getElementById('codeSection').classList.remove('hidden');
   }
 }
 
@@ -82,20 +93,14 @@ function checkKeyword() {
   clearResult("keywordResult");
 
   if (!keywordInput) {
-    showResult("keywordResult", "Please enter a keyword.", "error");
+    showResult("keywordResult", "Please enter the keyword", "error");
     return;
   }
 
-  if (currentCache && currentCache.keyword && currentCache.keyword.toLowerCase() === keywordInput.toLowerCase()) {
-    const html = `✅ <strong>Correct!</strong><br><br>
-                  <strong>You found:</strong> <a href="${currentCache.page}" target="_blank" rel="noopener">${currentCache.name}</a><br>
-                  <strong>Final coordinates:</strong> ${currentCache.coordinates}`;
-    const el = document.getElementById("keywordResult");
-    el.innerHTML = html;
-    el.className = "result-success result-visible";
-    el.style.display = "flex";
+  if (currentCache?.keyword?.toLowerCase() === keywordInput.toLowerCase()) {
+    showSuccess(currentCache, "keywordResult");
   } else {
-    showResult("keywordResult", "Incorrect keyword.", "error");
+    showResult("keywordResult", "Incorrect keyword", "error");
   }
 }
 
@@ -108,32 +113,26 @@ function checkCoordinates() {
   clearResult("coordsResult");
 
   if (!coordsInput) {
-    showResult("coordsResult", "Please enter coordinates.", "error");
+    showResult("coordsResult", "Please enter the coordinates", "error");
     return;
   }
 
   const normalizedUserInput = normalize(coordsInput);
-  const normalizedCorrectCoords = normalize(currentCache && currentCache.coordinates ? currentCache.coordinates : "");
+  const normalizedCorrectCoords = normalize(currentCache?.coordinates || "");
 
-  if (currentCache && normalizedUserInput === normalizedCorrectCoords) {
-    const html = `✅ <strong>Correct!</strong><br><br>
-                  <strong>You found:</strong> <a href="${currentCache.page}" target="_blank" rel="noopener">${currentCache.name}</a>.`;
-    const el = document.getElementById("coordsResult");
-    el.innerHTML = html;
-    el.className = "result-success result-visible";
-    el.style.display = "flex";
+  if (normalizedUserInput === normalizedCorrectCoords) {
+    showSuccess(currentCache, "coordsResult");
   } else {
-    showResult("coordsResult", "Incorrect coordinates.", "error");
+    showResult("coordsResult", "Incorrect coordinates", "error");
   }
 }
 
-// Enter key handlers
-function handleCodeEnter(event) {
-  if (event.key === 'Enter') checkCode();
+// Universal Enter key handler
+function handleEnter(event, checkFunction) {
+  if (event.key === 'Enter') checkFunction();
 }
-function handleKeywordEnter(event) {
-  if (event.key === 'Enter') checkKeyword();
-}
-function handleCoordsEnter(event) {
-  if (event.key === 'Enter') checkCoordinates();
-}
+
+// Attach handlers
+document.getElementById('codeInput')?.addEventListener('keypress', e => handleEnter(e, checkCode));
+document.getElementById('keywordInput')?.addEventListener('keypress', e => handleEnter(e, checkKeyword));
+document.getElementById('coordsInput')?.addEventListener('keypress', e => handleEnter(e, checkCoordinates));
