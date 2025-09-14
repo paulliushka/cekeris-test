@@ -20,10 +20,7 @@
     <!-- GeoCode Section -->
     <div id="codeSection" class="container">
       <h2>Enter Cache GeoCode</h2>
-      <div class="form-group">
-        <label for="codeInput">GeoCode:</label>
-        <input type="text" id="codeInput" placeholder="GCXXXXX" onkeydown="handleCodeEnter(event)">
-      </div>
+      <input type="text" id="codeInput" placeholder="GCXXXXX" onkeydown="handleCodeEnter(event)">
       <button onclick="checkCode()">Next</button>
       <div id="codeResult"></div>
     </div>
@@ -31,10 +28,7 @@
     <!-- Keyword Section (hidden at start) -->
     <div id="keywordSection" class="container hidden">
       <h2>Check Cache Keyword</h2>
-      <div class="form-group">
-        <label for="keywordInput">Keyword:</label>
         <input type="text" id="keywordInput" placeholder="GoldenKey" onkeydown="handleKeywordEnter(event)">
-      </div>
       <button onclick="checkKeyword()">Check</button>
       <div id="keywordResult"></div>
     </div>
@@ -42,10 +36,7 @@
     <!-- Coordinates Section (hidden at start) -->
     <div id="coordsSection" class="container hidden">
       <h2>Check Cache Coordinates</h2>
-      <div class="form-group">
-        <label for="coordsInput">Coordinates:</label>
         <input type="text" id="coordsInput" placeholder="N XX° XX.XXX E XX° XX.XXX" onkeydown="handleCoordsEnter(event)">
-      </div>
       <button onclick="checkCoordinates()">Check</button>
       <div id="coordsResult"></div>
     </div>

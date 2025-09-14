@@ -7,11 +7,11 @@
     "page": "https://coord.info/GC9M1PA" 
   },
   {
-    "code": "GC6HNPB",
+    "code": "TEST",
     "name": "Joensu Bird (GC6HNPB)",
     "type": "keyword",
     "coordinates": "N 54° 41.301' E 025° 12.518'",
     "page": "https://coord.info/GC6HNPB",
-    "keyword": "GoldenKey"
+    "keyword": "key"
   }
 ]
