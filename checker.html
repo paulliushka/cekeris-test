@@ -39,35 +39,41 @@
       <h2>Check Cache Coordinates</h2>
 
       <div class="coords-form">
-        <span>N</span>
-        <select id="latDeg">
-          <option value="53">53</option>
-          <option value="54" selected>54</option>
-          <option value="55">55</option>
-          <option value="56">56</option>
-        </select>
-        <span>°</span>
-        <input type="text" id="latMin" maxlength="2" placeholder="00"/>
-        <span>.</span>
-        <input type="text" id="latDec" maxlength="3" placeholder="000"/>
-        <span>'</span>
+        <!-- North row -->
+        <div class="coord-row">
+          <span>N</span>
+          <select id="latDeg">
+            <option value="53">53</option>
+            <option value="54" selected>54</option>
+            <option value="55">55</option>
+            <option value="56">56</option>
+          </select>
+          <span>°</span>
+          <input type="text" id="latMin" maxlength="2" placeholder="00"/>
+          <span>.</span>
+          <input type="text" id="latDec" maxlength="3" placeholder="000"/>
+          <span>'</span>
+        </div>
 
-        <span>E</span>
-        <select id="lonDeg">
-          <option value="20">20</option>
-          <option value="21">21</option>
-          <option value="22">22</option>
-          <option value="23">23</option>
-          <option value="24">24</option>
-          <option value="25" selected>25</option>
-          <option value="26">26</option>
-          <option value="27">27</option>
-        </select>
-        <span>°</span>
-        <input type="text" id="lonMin" maxlength="2" placeholder="00" />
-        <span>.</span>
-        <input type="text" id="lonDec" maxlength="3" placeholder="000" />
-        <span>'</span>
+        <!-- East row -->
+        <div class="coord-row">
+          <span>E</span>
+          <select id="lonDeg">
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25" selected>25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+          </select>
+          <span>°</span>
+          <input type="text" id="lonMin" maxlength="2" placeholder="00" />
+          <span>.</span>
+          <input type="text" id="lonDec" maxlength="3" placeholder="000" />
+          <span>'</span>
+        </div>
       </div>
 
       <button onclick="checkCoordinates()">Check</button>

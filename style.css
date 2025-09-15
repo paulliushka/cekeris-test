@@ -131,11 +131,16 @@ footer {
 /* Coordinates form */
 .coords-form {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column; /* stack rows vertically */
+  gap: 10px; /* spacing between N and E */
+  align-items: center;
+}
+
+.coord-row {
+  display: flex;
+  gap: 6px; /* spacing between inputs in the row */
   justify-content: center;
   align-items: center;
-  font-size: 1.2rem;
 }
 
 .coords-form select,

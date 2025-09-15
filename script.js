@@ -141,8 +141,6 @@ function handleEnter(event, checkFunction) {
 // Attach handlers
 document.getElementById('codeInput')?.addEventListener('keypress', e => handleEnter(e, checkCode));
 document.getElementById('keywordInput')?.addEventListener('keypress', e => handleEnter(e, checkKeyword));
-
-// Enter key for coordinates fields
 ["latMin", "latDec", "lonMin", "lonDec"].forEach(id => {
   document.getElementById(id)?.addEventListener('keypress', e => handleEnter(e, checkCoordinates));
 });
@@ -158,8 +156,19 @@ function enforceRange(el, max) {
   }
 }
 
-// Apply restrictions to coordinate fields
+// Apply restrictions
 document.getElementById("latMin")?.addEventListener("input", e => enforceRange(e.target, 59));
 document.getElementById("lonMin")?.addEventListener("input", e => enforceRange(e.target, 59));
 document.getElementById("latDec")?.addEventListener("input", e => enforceRange(e.target, 999));
 document.getElementById("lonDec")?.addEventListener("input", e => enforceRange(e.target, 999));
+
+// Auto-pad zeros on blur
+function padZeros(el, length) {
+  if (!el.value) return;
+  el.value = el.value.padStart(length, "0");
+}
+
+document.getElementById("latMin")?.addEventListener("blur", e => padZeros(e.target, 2));
+document.getElementById("lonMin")?.addEventListener("blur", e => padZeros(e.target, 2));
+document.getElementById("latDec")?.addEventListener("blur", e => padZeros(e.target, 3));
+document.getElementById("lonDec")?.addEventListener("blur", e => padZeros(e.target, 3));
