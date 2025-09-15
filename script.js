@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     let autoCode = params.get('code');
     if (autoCode) {
-      autoCode = decodeURIComponent(autoCode).trim().slice(0, 20); // sanitize, max 20 chars
+      autoCode = decodeURIComponent(autoCode).trim().slice(0, 20);
       const input = document.getElementById('codeInput');
       if (input) {
         input.value = autoCode;
@@ -25,8 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// Utility function to show / clear results
-// Accepts text or HTML
+// Utility: show / clear results
 function showResult(id, content, type = "success", isHTML = false) {
   const el = document.getElementById(id);
   if (isHTML) el.innerHTML = content;
@@ -36,7 +35,6 @@ function showResult(id, content, type = "success", isHTML = false) {
   el.style.display = "flex";
 }
 
-// Clears a result element
 function clearResult(id) {
   const el = document.getElementById(id);
   el.textContent = "";
@@ -44,7 +42,6 @@ function clearResult(id) {
   el.style.display = "none";
 }
 
-// Helper: show success message in 3-line format
 function showSuccess(cache, elementId) {
   const html = `
     <div class="result-line">✅ <strong>Correct!</strong></div>
@@ -80,7 +77,7 @@ function checkCode() {
     document.getElementById('keywordInput').focus();
   } else if (currentCache.type === 'coords') {
     document.getElementById('coordsSection').classList.remove('hidden');
-    document.getElementById('coordsInput').focus();
+    document.getElementById('latMin').focus();
   } else {
     showResult("codeResult", "Unrecognized cache type", "error");
     document.getElementById('codeSection').classList.remove('hidden');
@@ -109,15 +106,24 @@ const normalize = (str = "") => str.replace(/[\s°',.]/g, '').toLowerCase();
 
 // 3. Coordinates checker
 function checkCoordinates() {
-  const coordsInput = document.getElementById('coordsInput').value;
   clearResult("coordsResult");
 
-  if (!coordsInput) {
-    showResult("coordsResult", "Please enter the coordinates", "error");
+  const latDeg = document.getElementById("latDeg").value;
+  const latMin = document.getElementById("latMin").value.padStart(2, "0");
+  const latDec = document.getElementById("latDec").value.padStart(3, "0");
+
+  const lonDeg = document.getElementById("lonDeg").value;
+  const lonMin = document.getElementById("lonMin").value.padStart(2, "0");
+  const lonDec = document.getElementById("lonDec").value.padStart(3, "0");
+
+  if (!latMin || !latDec || !lonMin || !lonDec) {
+    showResult("coordsResult", "Please enter all coordinate parts", "error");
     return;
   }
 
-  const normalizedUserInput = normalize(coordsInput);
+  const userCoords = `N ${latDeg}° ${latMin}.${latDec}' E ${lonDeg}° ${lonMin}.${lonDec}'`;
+
+  const normalizedUserInput = normalize(userCoords);
   const normalizedCorrectCoords = normalize(currentCache?.coordinates || "");
 
   if (normalizedUserInput === normalizedCorrectCoords) {
@@ -135,4 +141,8 @@ function handleEnter(event, checkFunction) {
 // Attach handlers
 document.getElementById('codeInput')?.addEventListener('keypress', e => handleEnter(e, checkCode));
 document.getElementById('keywordInput')?.addEventListener('keypress', e => handleEnter(e, checkKeyword));
-document.getElementById('coordsInput')?.addEventListener('keypress', e => handleEnter(e, checkCoordinates));
+
+// Enter key for coordinates fields
+["latMin", "latDec", "lonMin", "lonDec"].forEach(id => {
+  document.getElementById(id)?.addEventListener('keypress', e => handleEnter(e, checkCoordinates));
+});

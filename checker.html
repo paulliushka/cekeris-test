@@ -21,7 +21,7 @@
     <!-- GeoCode Section -->
     <div id="codeSection" class="container">
       <h2>Enter GC Code</h2>
-      <input type="text" id="codeInput" placeholder="GCXXXXX" onkeydown="handleCodeEnter(event)">
+      <input type="text" id="codeInput" placeholder="GCXXXXX">
       <button onclick="checkCode()">Next</button>
       <div id="codeResult"></div>
     </div>
@@ -29,7 +29,7 @@
     <!-- Keyword Section (hidden at start) -->
     <div id="keywordSection" class="container hidden">
       <h2>Enter Cache Keyword</h2>
-        <input type="text" id="keywordInput" placeholder="GoldenKey" onkeydown="handleKeywordEnter(event)">
+      <input type="text" id="keywordInput" placeholder="GoldenKey">
       <button onclick="checkKeyword()">Check</button>
       <div id="keywordResult"></div>
     </div>
@@ -37,7 +37,39 @@
     <!-- Coordinates Section (hidden at start) -->
     <div id="coordsSection" class="container hidden">
       <h2>Check Cache Coordinates</h2>
-        <input type="text" id="coordsInput" placeholder="N XX° XX.XXX E XX° XX.XXX" onkeydown="handleCoordsEnter(event)">
+
+      <div class="coords-form">
+        <span>N</span>
+        <select id="latDeg">
+          <option value="53">53</option>
+          <option value="54" selected>54</option>
+          <option value="55">55</option>
+          <option value="56">56</option>
+        </select>
+        <span>°</span>
+        <input type="number" id="latMin" min="0" max="59" placeholder="MM" />
+        <span>.</span>
+        <input type="number" id="latDec" min="0" max="999" placeholder="XXX" />
+        <span>'</span>
+
+        <span>E</span>
+        <select id="lonDeg">
+          <option value="20">20</option>
+          <option value="21">21</option>
+          <option value="22">22</option>
+          <option value="23" selected>23</option>
+          <option value="24">24</option>
+          <option value="25">25</option>
+          <option value="26">26</option>
+          <option value="27">27</option>
+        </select>
+        <span>°</span>
+        <input type="number" id="lonMin" min="0" max="59" placeholder="MM" />
+        <span>.</span>
+        <input type="number" id="lonDec" min="0" max="999" placeholder="XXX" />
+        <span>'</span>
+      </div>
+
       <button onclick="checkCoordinates()">Check</button>
       <div id="coordsResult"></div>
     </div>
