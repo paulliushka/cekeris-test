@@ -146,3 +146,20 @@ document.getElementById('keywordInput')?.addEventListener('keypress', e => handl
 ["latMin", "latDec", "lonMin", "lonDec"].forEach(id => {
   document.getElementById(id)?.addEventListener('keypress', e => handleEnter(e, checkCoordinates));
 });
+
+// Restrict numeric input and enforce range
+function enforceRange(el, max) {
+  el.value = el.value.replace(/\D/g, ""); // only digits
+  if (el.maxLength > 0 && el.value.length > el.maxLength) {
+    el.value = el.value.slice(0, el.maxLength);
+  }
+  if (el.value !== "" && parseInt(el.value) > max) {
+    el.value = max.toString();
+  }
+}
+
+// Apply restrictions to coordinate fields
+document.getElementById("latMin")?.addEventListener("input", e => enforceRange(e.target, 59));
+document.getElementById("lonMin")?.addEventListener("input", e => enforceRange(e.target, 59));
+document.getElementById("latDec")?.addEventListener("input", e => enforceRange(e.target, 999));
+document.getElementById("lonDec")?.addEventListener("input", e => enforceRange(e.target, 999));

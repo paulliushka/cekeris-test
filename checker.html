@@ -21,7 +21,7 @@
     <!-- GeoCode Section -->
     <div id="codeSection" class="container">
       <h2>Enter GC Code</h2>
-      <input type="text" id="codeInput" placeholder="GCXXXXX">
+      <input type="text" id="codeInput" placeholder="GCXXXXX" maxlength="20">
       <button onclick="checkCode()">Next</button>
       <div id="codeResult"></div>
     </div>
@@ -29,7 +29,7 @@
     <!-- Keyword Section (hidden at start) -->
     <div id="keywordSection" class="container hidden">
       <h2>Enter Cache Keyword</h2>
-      <input type="text" id="keywordInput" placeholder="GoldenKey">
+      <input type="text" id="keywordInput" placeholder="GoldenKey" maxlength="30">
       <button onclick="checkKeyword()">Check</button>
       <div id="keywordResult"></div>
     </div>
@@ -47,9 +47,9 @@
           <option value="56">56</option>
         </select>
         <span>°</span>
-        <input type="number" id="latMin" min="0" max="59" placeholder="MM" />
+        <input type="text" id="latMin" maxlength="2" placeholder="00"/>
         <span>.</span>
-        <input type="number" id="latDec" min="0" max="999" placeholder="XXX" />
+        <input type="text" id="latDec" maxlength="3" placeholder="000"/>
         <span>'</span>
 
         <span>E</span>
@@ -57,16 +57,16 @@
           <option value="20">20</option>
           <option value="21">21</option>
           <option value="22">22</option>
-          <option value="23" selected>23</option>
+          <option value="23">23</option>
           <option value="24">24</option>
-          <option value="25">25</option>
+          <option value="25" selected>25</option>
           <option value="26">26</option>
           <option value="27">27</option>
         </select>
         <span>°</span>
-        <input type="number" id="lonMin" min="0" max="59" placeholder="MM" />
+        <input type="text" id="lonMin" maxlength="2" placeholder="00" />
         <span>.</span>
-        <input type="number" id="lonDec" min="0" max="999" placeholder="XXX" />
+        <input type="text" id="lonDec" maxlength="3" placeholder="000" />
         <span>'</span>
       </div>
 
