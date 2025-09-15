@@ -3,7 +3,7 @@
     "short_name": "TviCheck",
     "start_url": "/home",
     "theme_color": "darkgreen",
-    "background_color": "black",
+    "background_color": "darkgreen",
     "display": "standalone",
     "icons": [
         {
