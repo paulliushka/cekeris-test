@@ -1,0 +1,16 @@
+{
+    "name": "TviCheck",
+    "short_name": "TviCheck",
+    "start_url": "/home",
+    "theme_color": "darkgreen",
+    "background_color": "black",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "192x192.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "maskable"
+        }
+    ]
+}
