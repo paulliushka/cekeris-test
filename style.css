@@ -132,13 +132,11 @@ footer {
 .coords-form {
   display: flex;
   flex-direction: column; /* stack rows vertically */
-  gap: 10px; /* spacing between N and E */
   align-items: center;
 }
 
 .coord-row {
   display: flex;
-  gap: 6px; /* spacing between inputs in the row */
   justify-content: center;
   align-items: center;
 }
@@ -146,12 +144,11 @@ footer {
 .coords-form select,
 .coords-form input {
   width: auto;
-  min-width: 60px;
+  max-width: 100px;
   text-align: center;
-  padding: 6px 10px;
-  border-radius: 8px;
   border: 1px solid green;
   background: #0f1a11;
   color: #fff;
   font-size: 1rem;
+  margin: 5px;
 }

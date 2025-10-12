@@ -3,14 +3,14 @@
     "code": "GC00001",
     "name": "Cache 1",
     "type": "coords",
-    "coordinates": "N 54° 00.001' E 025° 00.001'",
+    "coordinates": "N 54° 00.001' E 25° 00.001'",
     "page": "https://coord.info/GC00001" 
   },
   {
     "code": "GC00002",
     "name": "Cache 2",
     "type": "keyword",
-    "coordinates": "N 54° 00.002' E 025° 00.002'",
+    "coordinates": "N 54° 00.002' E 25° 00.002'",
     "page": "https://coord.info/GC00002",
     "keyword": "key"
   }
