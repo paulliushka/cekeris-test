@@ -1,13 +1,52 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Redirecting...</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta http-equiv="refresh" content="0; url=https://www.tvicheck.com/home">
-    </head>
-    <body>
-        <main>
-            <p>If you are not redirected automatically, click <a href="https://www.tvicheck.com/home">here</a>.</p>
-        </main>
-    </body>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <title>Patvirtinimas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: #f6f6f6;
+        }
+        .box {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Prašome patvirtinti, kad nesate robotas</h2>
+
+    <!-- TURNSTILE CAPTCHA -->
+    <div class="cf-turnstile"
+         data-sitekey="0x4AAAAAACCdHsMSeRVWdvOO"
+         data-callback="captchaPassed">
+    </div>
+
+    <p>Patvirtinus būsite nukreipti...</p>
+</div>
+
+<script>
+function captchaPassed() {
+    // Po sėkmingos captcha → redirect
+    window.location.href = "https://www.tvicheck.com/home";
+}
+</script>
+
+</body>
 </html>
